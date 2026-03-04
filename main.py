@@ -92,7 +92,12 @@ def read_grades_from_csv(file_path: str) -> dict[str, int]:
     return grades
 
 
-def apply_grades_to_xlsx(grades: dict[str, int], xlsx_file: str, debug: bool = False) -> None:
+def apply_grades_to_xlsx(
+    grades: dict[str, int],
+    xlsx_file: str,
+    debug: bool = False,
+    unregistered: bool = False,
+) -> None:
     """Write grades from *grades* into the matching rows of an XLSX workbook.
 
     The active sheet is expected to have:
@@ -109,6 +114,9 @@ def apply_grades_to_xlsx(grades: dict[str, int], xlsx_file: str, debug: bool = F
         xlsx_file: Path to the XLSX file to update (written in-place).
         debug: When ``True``, log a message for every student row in the
             workbook whose ID is not present in *grades*.
+        unregistered: When ``True``, print every student ID present in
+            *grades* (CSV) but absent from the XLSX (took the exam but
+            never registered).
 
     Raises:
         AssertionError: If the expected column headers are not found in row 2.
@@ -160,6 +168,21 @@ def apply_grades_to_xlsx(grades: dict[str, int], xlsx_file: str, debug: bool = F
                 print(f"Student {student_id} not found in CSV — skipping.")
 
     print(f"Total students processed: {total_students}, Grades applied: {applied_grades}")
+
+    if unregistered and student_id_index is not None:
+        xlsx_ids = {
+            str(row[student_id_index].value)
+            for row in sheet.iter_rows(min_row=3, values_only=False)
+            if row[student_id_index].value is not None
+        }
+        missing = sorted(sid for sid in grades if sid not in xlsx_ids)
+        if missing:
+            print(f"\nUnregistered students ({len(missing)} took exam but not in XLSX):")
+            for sid in missing:
+                print(f"  {sid} (grade: {grades[sid]})")
+        else:
+            print("\nNo unregistered students found.")
+
     workbook.save(xlsx_file)
     print(f"Grades saved to {xlsx_file}.")
 
@@ -191,6 +214,12 @@ def main() -> None:
         action="store_true",
         help="Print a message for each student in the XLSX whose ID is not in the CSV.",
     )
+    parser.add_argument(
+        "--unregistered",
+        action="store_true",
+        help="Print all students in the CSV (took the exam) who are absent from the XLSX "
+             "(i.e., never registered for the course).",
+    )
     args = parser.parse_args()
 
     grades = read_grades_from_csv(args.csv_file)
@@ -198,7 +227,7 @@ def main() -> None:
     if args.only_passing:
         grades = {sid: g for sid, g in grades.items() if g >= PASSING_GRADE}
 
-    apply_grades_to_xlsx(grades, args.xlsx_file, debug=args.debug)
+    apply_grades_to_xlsx(grades, args.xlsx_file, debug=args.debug, unregistered=args.unregistered)
 
 
 if __name__ == "__main__":
