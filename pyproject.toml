@@ -1,7 +1,7 @@
 [project]
 name = "myuni"
 version = "0.1.0"
-description = "Add your description here"
+description = "A CLI tool for importing student grades from CSV into university Excel grade sheets"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
