@@ -4,7 +4,7 @@ Guidelines for AI agents (Claude, Codex, Copilot, etc.) working in this reposito
 
 ## Project Overview
 
-`myuni` is a small, single-file Python CLI tool (`main.py`). It reads student grades from a CSV file and writes them into the correct cells of a university-issued XLSX gradebook. The code is intentionally minimal — keep it that way.
+`myuni` is a small, single-file Python CLI tool (`main.py`). It reads student grades from a CSV file and writes them into the correct cells of a university-issued XLSX gradebook downloaded from myuni. The code is intentionally minimal — keep it that way.
 
 ## Repository Structure
 

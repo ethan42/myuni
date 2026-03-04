@@ -1,6 +1,6 @@
 # myuni
 
-A CLI tool for importing student grades from a CSV export into university Excel (XLSX) grade sheets. Built to handle the specific student ID format and Greek-language column headers used in Greek university grade management systems.
+A CLI tool for importing student grades from a CSV export into university Excel (XLSX) grade sheets exported from myuni. After grades are inserted, the gradebook can be imported again into myuni. Built to handle the specific student ID format and Greek-language column headers used in Greek university grade management systems.
 
 ## Features
 
@@ -43,7 +43,7 @@ uv run main.py <csv_file> <xlsx_file> [--only-passing] [--debug]
 
 ### Examples
 
-Apply all grades from a CSV to an XLSX:
+Apply all grades from a CSV to an XLSX (from myuni):
 ```bash
 uv run main.py grades.csv gradebook.xlsx
 ```

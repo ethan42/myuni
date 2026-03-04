@@ -52,7 +52,7 @@ def read_grades_from_csv(file_path: str) -> dict[str, int]:
         ValueError: If any line has an invalid format, an unrecognised student
             ID, or a non-integer grade value.
     """
-    grades: dict[str, int] = {}
+    grades: dict[str, float] = {}
 
     with open(file_path, "r") as fh:
         lines = fh.readlines()
@@ -83,7 +83,7 @@ def read_grades_from_csv(file_path: str) -> dict[str, int]:
             )
 
         try:
-            grade = int(grade_str)
+            grade = float(grade_str)
         except ValueError:
             raise ValueError(f"Invalid grade for student {student_id!r}: {grade_str!r}")
 
@@ -201,7 +201,7 @@ def main() -> None:
     )
     parser.add_argument(
         "xlsx_file",
-        help="Path to the XLSX gradebook where grades will be written.",
+        help="Path to the XLSX gradebook (from myuni) where grades will be written.",
     )
     parser.add_argument(
         "--only-passing",
