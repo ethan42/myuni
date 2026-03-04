@@ -100,4 +100,4 @@ Grades are written into the `Βαθμολογία` column for each row whose `Α
 
 ## License
 
-MIT © 2026 Thanassis Avgerinos
+MIT © 2026 University of Athens
